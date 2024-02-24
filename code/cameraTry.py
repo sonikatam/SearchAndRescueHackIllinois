@@ -1,23 +1,24 @@
-import time
-import matplotlib.pyplot as plt
 from src import camera as camera_module
+import cv2
 
 if __name__ == '__main__':
 
-    total_seconds = 60
-    sample_hz = 10
-
     camera = camera_module.Camera({
-        "show_preview": False
+        "show_preview": True
     })
-    start_time = time.time()
 
-    while time.time() - start_time < total_seconds:
+    # Continuously capture frames and display them
+    while True:
         camera.capture()
         image_array = camera.image_array
 
-        # Display the image
-        plt.imshow(image_array)
-        plt.show()
+        # Display the image using OpenCV
+        cv2.imshow("Camera Video", image_array)
 
-        time.sleep(max(0, 1/sample_hz - (time.time() - start_time)))
+        # Check for 'q' key to exit the loop
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
+
+    # Release the camera and close OpenCV window
+    camera.release()
+    cv2.destroyAllWindows()
