@@ -178,9 +178,11 @@ while True:
     distance = round(distance, 2)
 
     print(distance)
+    
+    forward()
 
-    if distance > 15:
-        stop()
-        break  # Stop moving forward and break out of the loop
-    else:
-        forward()
+    # if distance > 15:
+    #     stop()
+    #     break  # Stop moving forward and break out of the loop
+    # else:
+    #     forward()
