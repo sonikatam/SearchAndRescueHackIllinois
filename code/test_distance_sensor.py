@@ -31,4 +31,3 @@ if __name__ == '__main__':
 
         time.sleep(max(0, 1/sample_hz -
                        (time.time() - loop_start)))
-                       

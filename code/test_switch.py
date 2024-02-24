@@ -23,4 +23,3 @@ if __name__ == '__main__':
         print(2, 'Pressed: ', switch2.is_pressed, 'State: ', switch2.state)
 
         time.sleep(max(0, 1/sample_hz - (time.time() - loop_start)))
-        

@@ -25,4 +25,3 @@ if __name__ == '__main__':
         led1.off()
         led2.off()
         time.sleep(cycle_time)
-        
