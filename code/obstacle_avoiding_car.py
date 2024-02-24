@@ -77,11 +77,11 @@ if __name__ == '__main__':
             print("checking distance")
             if distance < 0.5:  # Adjust distance threshold as needed
                 print("Obstacle detected! Moving backward...")
-                move_backward()  # Move backward when obstacle detected
+                move_forward()  # Move backward when obstacle detected
                 time.sleep(1) 
             else:
                 print("move forward")
-                move_forward()
+                move_backward()
                 time.sleep(0.1)
             # move_forward()  # Move forward continuously
             # time.sleep(0.1)
