@@ -33,6 +33,7 @@ if __name__ == '__main__':
     TRIG = 17
     ECHO = 27
     GPIO.setup(TRIG, GPIO.OUT)
+    GPIO.setup(ECHO, GPIO.IN)
 
 
     speeds = list(np.linspace(0, 1, 11)) + list(np.linspace(0.9, 0, 10))
