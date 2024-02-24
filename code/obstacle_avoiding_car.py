@@ -27,6 +27,13 @@ if __name__ == '__main__':
         }
     })
     
+    distance_sensor1 = distance_sensor_module.DistanceSensor({
+        "pins": {
+            "echo": 23,
+            "trigger": 24
+        }
+    })
+    
     total_seconds = 60
     sample_hz = 2
     
@@ -62,20 +69,28 @@ if __name__ == '__main__':
             time.sleep(0.00001)
             GPIO.output(TRIG, False)
             
-            timeout = time.time() + 0.1  # Set timeout duration (0.1 second)
-            pulse_start = time.time()
-            while GPIO.input(ECHO) == 0 and time.time() < timeout:
-                pulse_start = time.time()
+            start_time = time.time()
+            while time.time() - start_time < total_seconds:
+                loop_start = time.time()
+                print("Sensor 1: ", distance_sensor1.distance)
 
-            pulse_end = time.time()
-            while GPIO.input(ECHO) == 1 and time.time() < timeout:
-                pulse_end = time.time()
+                time.sleep(max(0, 1/sample_hz -
+                       (time.time() - loop_start)))
             
-            pulse_duration = pulse_end - pulse_start
-            distance = pulse_duration * 17150
-            distance = round(distance, 2)
+            # timeout = time.time() + 0.1  # Set timeout duration (0.1 second)
+            # pulse_start = time.time()
+            # while GPIO.input(ECHO) == 0 and time.time() < timeout:
+            #     pulse_start = time.time()
+
+            # pulse_end = time.time()
+            # while GPIO.input(ECHO) == 1 and time.time() < timeout:
+            #     pulse_end = time.time()
+            
+            # pulse_duration = pulse_end - pulse_start
+            # distance = pulse_duration * 17150
+            # distance = round(distance, 2)
             print("checking distance")
-            if distance < 0.5:  # Adjust distance threshold as needed
+            if distance_sensor1.distance < 0.3:  # Adjust distance threshold as needed
                 print("Obstacle detected! Moving backward...")
                 move_forward()  # Move backward when obstacle detected
                 time.sleep(1) 
