@@ -57,14 +57,18 @@ if __name__ == '__main__':
     
     try:
         while True:
+            print("in while loop")
             GPIO.output(TRIG, True)
             time.sleep(0.00001)
             GPIO.output(TRIG, False)
             
-            while GPIO.input(ECHO) == 0:
+            timeout = time.time() + 0.1  # Set timeout duration (0.1 second)
+            pulse_start = time.time()
+            while GPIO.input(ECHO) == 0 and time.time() < timeout:
                 pulse_start = time.time()
-                
-            while GPIO.input(ECHO) == 1:
+
+            pulse_end = time.time()
+            while GPIO.input(ECHO) == 1 and time.time() < timeout:
                 pulse_end = time.time()
             
             pulse_duration = pulse_end - pulse_start
@@ -85,8 +89,7 @@ if __name__ == '__main__':
         stop_motors()
         GPIO.cleanup()
     
-
-
+    print("stopping")
     motor1.stop()
     motor2.stop()
 
