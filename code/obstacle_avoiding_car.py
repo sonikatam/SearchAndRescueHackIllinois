@@ -70,25 +70,9 @@ if __name__ == '__main__':
             GPIO.output(TRIG, False)
             
             start_time = time.time()
-            while time.time() - start_time < total_seconds:
-                loop_start = time.time()
-                print("Sensor 1: ", distance_sensor1.distance)
+            loop_start = time.time()
+            print("Sensor 1: ", distance_sensor1.distance)
 
-                time.sleep(max(0, 1/sample_hz -
-                       (time.time() - loop_start)))
-            
-            # timeout = time.time() + 0.1  # Set timeout duration (0.1 second)
-            # pulse_start = time.time()
-            # while GPIO.input(ECHO) == 0 and time.time() < timeout:
-            #     pulse_start = time.time()
-
-            # pulse_end = time.time()
-            # while GPIO.input(ECHO) == 1 and time.time() < timeout:
-            #     pulse_end = time.time()
-            
-            # pulse_duration = pulse_end - pulse_start
-            # distance = pulse_duration * 17150
-            # distance = round(distance, 2)
             print("checking distance")
             if distance_sensor1.distance < 0.3:  # Adjust distance threshold as needed
                 print("Obstacle detected! Moving backward...")
