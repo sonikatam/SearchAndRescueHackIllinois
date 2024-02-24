@@ -57,6 +57,11 @@ if __name__ == '__main__':
     def move_backward():
         motor1.backward(1)  # Move forward at full speed
         motor2.backward(1)
+        
+    def turn_right(): 
+        motor1.forward(1); 
+        motor2.backward(1); 
+        
 
     def stop_motors():
         motor1.stop()
@@ -74,9 +79,10 @@ if __name__ == '__main__':
             print("Sensor 1: ", distance_sensor1.distance)
 
             print("checking distance")
-            if distance_sensor1.distance < 0.3:  # Adjust distance threshold as needed
+            if distance_sensor1.distance < 0.35:  # Adjust distance threshold as needed
                 print("Obstacle detected! Moving backward...")
                 move_backward()  # Move backward when obstacle detected
+                turn_right()
                 time.sleep(1) 
             else:
                 print("move forward")
