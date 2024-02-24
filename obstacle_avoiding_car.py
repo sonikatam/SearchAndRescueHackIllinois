@@ -1,187 +1,48 @@
-# import RPi.GPIO as GPIO                    #Import GPIO library
-# import time
-
-# #Import time library
-# GPIO.setwarnings(False)
-# GPIO.setmode(GPIO.BCM)                    # programming the GPIO by BCM pin numbers
-
-# TRIG = 17
-# ECHO = 27
-# TRIG1 = 18
-# ECHO1 = 28
-# led = 22
-
-# m11=16
-# m12=12
-# m21=21
-# m22=20
-
-# GPIO.setup(TRIG,GPIO.OUT)                  # initialize GPIO Pin as outputs
-# GPIO.setup(ECHO,GPIO.IN)                   # initialize GPIO Pin as input
-# GPIO.setup(TRIG1,GPIO.OUT)                  # initialize GPIO Pin as outputs
-# GPIO.setup(ECHO1,GPIO.IN)                   # initialize GPIO Pin as input
-
-# GPIO.setup(led,GPIO.OUT)                  
-
-# GPIO.setup(m11,GPIO.OUT)
-# GPIO.setup(m12,GPIO.OUT)
-# GPIO.setup(m21,GPIO.OUT)
-# GPIO.setup(m22,GPIO.OUT)
-
-# GPIO.output(led, 1)
-
-# time.sleep(5)
-
-# def stop():
-#     print("stop")
-#     GPIO.output(m11, 0)
-#     GPIO.output(m12, 0)
-#     GPIO.output(m21, 0)
-#     GPIO.output(m22, 0)
-
-# def forward():
-#     GPIO.output(m11, 1)
-#     GPIO.output(m12, 0)
-#     GPIO.output(m21, 1)
-#     GPIO.output(m22, 0)
-#     print("Forward")
-
-# def back():
-#     GPIO.output(m11, 0)
-#     GPIO.output(m12, 1)
-#     GPIO.output(m21, 0)
-#     GPIO.output(m22, 1)
-#     print("back")
-
-# def left():
-#     GPIO.output(m11, 0)
-#     GPIO.output(m12, 0)
-#     GPIO.output(m21, 1)
-#     GPIO.output(m22, 0)
-#     print("left")
-
-# def right():
-#     GPIO.output(m11, 1)
-#     GPIO.output(m12, 0)
-#     GPIO.output(m21, 0)
-#     GPIO.output(m22, 0)
-#     print("right")
-
-# stop()
-# count=0
-# while True:
-#  i=0
-#  avgDistance=0
-#  for i in range(5):
-#   GPIO.output(TRIG, False)                 #Set TRIG as LOW
-#   time.sleep(0.1)                                   #Delay
-
-#   GPIO.output(TRIG, True)                  #Set TRIG as HIGH
-#   time.sleep(0.00001)                           #Delay of 0.00001 seconds
-#   GPIO.output(TRIG, False)                 #Set TRIG as LOW
-
-#   while GPIO.input(ECHO)==0:              #Check whether the ECHO is LOW
-#        GPIO.output(led, False)             
-#   pulse_start = time.time()
-
-#   while GPIO.input(ECHO)==1:              #Check whether the ECHO is HIGH
-#        GPIO.output(led, False) 
-#   pulse_end = time.time()
-#   pulse_duration = pulse_end - pulse_start #time to get back the pulse to sensor
-
-#   distance = pulse_duration * 17150        #Multiply pulse duration by 17150 (34300/2) to get distance
-#   distance = round(distance,2)                 #Round to two decimal points
-#   avgDistance=avgDistance+distance
-
-#  avgDistance=avgDistance/5
-#  print(avgDistance)
-#  flag=0
-#  if avgDistance < 15:      #Check whether the distance is within 15 cm range
-#     count=count+1
-#     stop()
-#     time.sleep(1)
-#     back()
-#     time.sleep(1.5)
-#     if (count%3 ==1) & (flag==0):
-#      right()
-#      flag=1
-#     else:
-#      left()
-#      flag=0
-#     time.sleep(1.5)
-#     stop()
-#     time.sleep(1)
-#  else:
-#     forward()
-#     flag=0
-
 import RPi.GPIO as GPIO
 import time
+from src import motor as motor_module
+import numpy as np
 
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
 
+# Define motor pins
+motor_pins = {
+    "speed": 13,
+    "control1": 5,
+    "control2": 6
+}
+
+# Initialize motors
+motor1 = motor_module.Motor({"pins": motor_pins})
+motor2 = motor_module.Motor({"pins": motor_pins})  # Assuming same motor configuration
+
+# Define motor speeds
+speeds = list(np.linspace(0, 1, 11)) + list(np.linspace(0.9, 0, 10))
+
+# Define delay time
+dt = 0.25
+
+# Define ultrasonic sensor pins
 TRIG = 17
 ECHO = 27
-led = 22
 
-m11 = 16
-m12 = 12
-m21 = 21
-m22 = 20
-
+# Set up ultrasonic sensor
 GPIO.setup(TRIG, GPIO.OUT)
 GPIO.setup(ECHO, GPIO.IN)
-GPIO.setup(led, GPIO.OUT)                  
-GPIO.setup(m11, GPIO.OUT)
-GPIO.setup(m12, GPIO.OUT)
-GPIO.setup(m21, GPIO.OUT)
-GPIO.setup(m22, GPIO.OUT)
 
-GPIO.output(led, 1)
-time.sleep(5)
+def stop_motors():
+    motor1.stop()
+    motor2.stop()
 
-def stop():
-    print("stop")
-    GPIO.output(m11, 0)
-    GPIO.output(m12, 0)
-    GPIO.output(m21, 0)
-    GPIO.output(m22, 0)
+def move_forward(speed):
+    motor1.forward(speed)
+    motor2.forward(speed)
 
-def forward():
-    GPIO.output(m11, 1)
-    GPIO.output(m12, 0)
-    GPIO.output(m21, 1)
-    GPIO.output(m22, 0)
-    print("Forward")
+def move_backward(speed):
+    motor1.backward(speed)
+    motor2.backward(speed)
 
-forward()
-
-while True:
-    GPIO.output(TRIG, False)
-    time.sleep(0.1)
-
-    GPIO.output(TRIG, True)
-    time.sleep(0.00001)
-    GPIO.output(TRIG, False)
-
-    while GPIO.input(ECHO) == 0:
-        GPIO.output(led, False)
-        pulse_start = time.time()
-
-    while GPIO.input(ECHO) == 1:
-        GPIO.output(led, False)
-        pulse_end = time.time()
-
-    pulse_duration = pulse_end - pulse_start
-    distance = pulse_duration * 17150
-    distance = round(distance, 2)
-
-    print(distance)
-
-
-    if distance > 15:
-        stop()
-        break  # Stop moving forward and break out of the loop
-    else:
-        forward()
+def turn_right():
+    motor1.forward(0.5)  # Adjust speed for turning
+    motor2.backwar
