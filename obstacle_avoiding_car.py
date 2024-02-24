@@ -155,7 +155,7 @@ def forward():
     GPIO.output(m22, 0)
     print("Forward")
 
-stop()
+forward()
 
 while True:
     GPIO.output(TRIG, False)
@@ -178,11 +178,10 @@ while True:
     distance = round(distance, 2)
 
     print(distance)
-    
-    forward()
 
-    # if distance > 15:
-    #     stop()
-    #     break  # Stop moving forward and break out of the loop
-    # else:
-    #     forward()
+
+    if distance > 15:
+        stop()
+        break  # Stop moving forward and break out of the loop
+    else:
+        forward()
