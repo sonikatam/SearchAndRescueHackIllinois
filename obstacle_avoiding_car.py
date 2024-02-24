@@ -33,7 +33,7 @@ GPIO.output(led, 1)
 time.sleep(5)
 
 def stop():
-    print "stop"
+    print("stop")
     GPIO.output(m11, 0)
     GPIO.output(m12, 0)
     GPIO.output(m21, 0)
@@ -44,28 +44,28 @@ def forward():
     GPIO.output(m12, 0)
     GPIO.output(m21, 1)
     GPIO.output(m22, 0)
-    print "Forward"
+    print("Forward")
 
 def back():
     GPIO.output(m11, 0)
     GPIO.output(m12, 1)
     GPIO.output(m21, 0)
     GPIO.output(m22, 1)
-    print "back"
+    print("back")
 
 def left():
     GPIO.output(m11, 0)
     GPIO.output(m12, 0)
     GPIO.output(m21, 1)
     GPIO.output(m22, 0)
-    print "left"
+    print("left")
 
 def right():
     GPIO.output(m11, 1)
     GPIO.output(m12, 0)
     GPIO.output(m21, 0)
     GPIO.output(m22, 0)
-    print "right"
+    print("right")
 
 stop()
 count=0
@@ -94,7 +94,7 @@ while True:
   avgDistance=avgDistance+distance
 
  avgDistance=avgDistance/5
- print avgDistance
+ print(avgDistance)
  flag=0
  if avgDistance < 15:      #Check whether the distance is within 15 cm range
     count=count+1
@@ -115,3 +115,74 @@ while True:
     forward()
     flag=0
  
+# from gpiozero import LED, DistanceSensor
+# import time
+
+# led = LED(22)
+# sensor1 = DistanceSensor(17, 27)
+# sensor2 = DistanceSensor(18, 28)
+
+# # Motor pins
+# m11 = LED(16)
+# m12 = LED(12)
+# m21 = LED(21)
+# m22 = LED(20)
+
+# led.on()
+# time.sleep(5)
+
+# def stop():
+#     print("stop")
+#     m11.off()
+#     m12.off()
+#     m21.off()
+#     m22.off()
+
+# def forward():
+#     m11.on()
+#     m12.off()
+#     m21.on()
+#     m22.off()
+#     print("Forward")
+
+# def back():
+#     m11.off()
+#     m12.on()
+#     m21.off()
+#     m22.on()
+#     print("back")
+
+# def left():
+#     m11.off()
+#     m12.off()
+#     m21.on()
+#     m22.off()
+#     print("left")
+
+# def right():
+#     m11.on()
+#     m12.off()
+#     m21.off()
+#     m22.off()
+#     print("right")
+
+# stop()
+# count = 0
+# while True:
+#     avg_distance = (sensor1.distance + sensor2.distance) / 2
+#     print(avg_distance)
+#     if avg_distance < 0.15:  # Check whether the distance is within 15 cm range
+#         count += 1
+#         stop()
+#         time.sleep(1)
+#         back()
+#         time.sleep(1.5)
+#         if count % 3 == 1:
+#             right()
+#         else:
+#             left()
+#         time.sleep(1.5)
+#         stop()
+#         time.sleep(1)
+#     else:
+#         forward()

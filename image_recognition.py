@@ -7,7 +7,6 @@ def image_recognition(image_path):
 
     # Preprocess the image (if needed)
     # Perform image recognition processing (use an existing model or algorithm)
-
     # Display the processed image
     cv2.imshow('Processed Image', image)
     cv2.waitKey(0)
