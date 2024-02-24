@@ -59,8 +59,8 @@ if __name__ == '__main__':
         motor2.backward(1)
         
     def turn_right(): 
-        motor1.forward(1); 
-        motor2.backward(1); 
+        motor1.backward(0.5); 
+        # motor2.backward(); 
         
 
     def stop_motors():
