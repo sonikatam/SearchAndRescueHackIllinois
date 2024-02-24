@@ -7,12 +7,12 @@ if __name__ == '__main__':
     total_seconds = 60
     sample_hz = 2
 
-    distance_sensor1 = distance_sensor_module.DistanceSensor({
-        "pins": {
-            "echo": 23,
-            "trigger": 24
-        }
-    })
+    # distance_sensor1 = distance_sensor_module.DistanceSensor({
+    #     "pins": {
+    #         "echo": 23,
+    #         "trigger": 24
+    #     }
+    # })
 
     distance_sensor2 = distance_sensor_module.DistanceSensor({
         "pins": {
@@ -26,7 +26,7 @@ if __name__ == '__main__':
 
         loop_start = time.time()
 
-        print("Sensor 1: ", distance_sensor1.distance)
+        # print("Sensor 1: ", distance_sensor1.distance)
         print("Sensor 2: ", distance_sensor2.distance)
 
         time.sleep(max(0, 1/sample_hz -
