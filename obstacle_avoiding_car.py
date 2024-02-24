@@ -179,7 +179,7 @@ while True:
 
     print(distance)
 
-    if distance < 15:
+    if distance > 15:
         stop()
         break  # Stop moving forward and break out of the loop
     else:
