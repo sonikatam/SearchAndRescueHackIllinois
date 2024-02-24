@@ -8,6 +8,7 @@ import time
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
 
+
 if __name__ == '__main__':
 
     motor1 = motor_module.Motor({
@@ -31,6 +32,7 @@ if __name__ == '__main__':
     
     TRIG = 17
     ECHO = 27
+    GPIO.setup(TRIG, GPIO.OUT)
 
 
     speeds = list(np.linspace(0, 1, 11)) + list(np.linspace(0.9, 0, 10))
@@ -44,7 +46,7 @@ if __name__ == '__main__':
         motor1.forward(1)  # Move forward at full speed
         motor2.forward(1)  # Move forward at full speed
     
-    def move_forward():
+    def move_backward():
         motor1.backward(1)  # Move forward at full speed
         motor2.backward(1)
 
