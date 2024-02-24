@@ -43,6 +43,10 @@ if __name__ == '__main__':
     def move_forward():
         motor1.forward(1)  # Move forward at full speed
         motor2.forward(1)  # Move forward at full speed
+    
+    def move_forward():
+        motor1.backward(1)  # Move forward at full speed
+        motor2.backward(1)
 
     def stop_motors():
         motor1.stop()
