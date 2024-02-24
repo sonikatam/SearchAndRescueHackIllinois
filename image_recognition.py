@@ -10,26 +10,13 @@ while True:
     # Capture a frame from the camera
     ret, frame = cap.read()
 
-    # Convert the frame to grayscale for face detection
-    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    # Preprocess the image (if needed)
+    # Perform image recognition processing (use an existing model or algorithm)
 
-    # Perform face detection
-    faces = face_cascade.detectMultiScale(gray, scaleFactor=1.3, minNeighbors=5, minSize=(30, 30))
-
-    # Draw rectangles around the detected faces
-    for (x, y, w, h) in faces:
-        cv2.rectangle(frame, (x, y), (x+w, y+h), (255, 0, 0), 2)
-
-    # Display the frame
-    cv2.imshow('Image Recognition', frame)
-
-    # Break the loop if 'q' key is pressed
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        break
-
-# Release the camera and close the window
-cap.release()
-cv2.destroyAllWindows()
+    # Display the processed image
+    cv2.imshow('Processed Image', image)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
 
 
 # turn LED light on when recognized 
