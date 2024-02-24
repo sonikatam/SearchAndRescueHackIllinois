@@ -1,66 +1,55 @@
-from src import vehicle as vehicle_module
+from src import camera as camera_module
 import time
+import cv2
+import numpy as np
+import threading
+
+# Function to send images over a network
+def send_image(image_array, host, port):
+    encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 90]
+    _, img_encoded = cv2.imencode('.jpg', image_array, encode_param)
+    
+    # Create a socket connection and send the encoded image
+    # You may need to replace this with your specific networking code
+    # For example, you can use sockets, MQTT, etc.
+    # Here, we're just printing the size of the encoded image for demonstration purposes.
+    print(f"Sending image of size: {len(img_encoded)} bytes")
+
+# Function to continuously capture and send images
+def capture_and_send(camera, host, port, total_seconds, sample_hz):
+    start_time = time.time()
+
+    while time.time() - start_time < total_seconds:
+        image_array = camera.capture()
+        send_image(image_array, host, port)
+
+        time.sleep(max(0, 1/sample_hz - (time.time() - start_time)))
 
 if __name__ == '__main__':
+    total_seconds = 60
+    sample_hz = 10
 
-    vehicle = vehicle_module.Vehicle(
-        {
-            "motors": {
-                "left": {
-                    "pins": {
-                        "speed": 13,
-                        "control1": 5,
-                        "control2": 6
-                    }
-                },
-                "right": {
-                    "pins": {
-                        "speed": 12,
-                        "control1": 7,
-                        "control2": 8
-                    }
-                }
-            }
-        }
-    )
+    # Replace "your_laptop_ip" with the IP address of your laptop
+    host = "your_laptop_ip"
+    port = 12345  # Choose a suitable port
 
-    print('Forward')
-    vehicle.drive_forward(1)
-    time.sleep(3)
+    camera = camera_module.Camera({
+        "show_preview": False
+    })
 
-    print('Stop')
-    vehicle.stop()
-    time.sleep(1)
+    # Start a thread for capturing and sending images
+    capture_thread = threading.Thread(target=capture_and_send, args=(camera, host, port, total_seconds, sample_hz))
+    capture_thread.start()
 
-    print('Pivot Left')
-    vehicle.pivot_left(1)
-    time.sleep(2)
+    # Receive images on your laptop using OpenCV
+    # You need to run this code on your laptop, not on the Raspberry Pi
+    server_socket = cv2.VideoCapture(f"tcp://{host}:{port}")
+    while True:
+        ret, frame = server_socket.read()
+        cv2.imshow("Camera Feed", frame)
 
-    print('Pivot Right')
-    vehicle.pivot_right(1)
-    time.sleep(2)
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
 
-    print('Stop')
-    vehicle.stop()
-    time.sleep(1)
-
-    print('Backward')
-    vehicle.drive_backward(1)
-    time.sleep(2)
-
-    print('Stop')
-    vehicle.stop()
-    time.sleep(1)
-
-    print('Driving Figure 8')
-    vehicle.drive_forward(1)
-    time.sleep(1.5)
-    vehicle.drive(0.5, True, 1, True)
-    time.sleep(5)
-    vehicle.drive_forward(1)
-    time.sleep(3)
-    vehicle.drive(1, True, 0.5, True)
-    time.sleep(5)
-    vehicle.drive_forward(1)
-    time.sleep(1.5)
-    vehicle.stop()
+    server_socket.release()
+    cv2.destroyAllWindows()
