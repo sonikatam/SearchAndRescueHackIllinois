@@ -75,7 +75,7 @@ if __name__ == '__main__':
             distance = pulse_duration * 17150
             distance = round(distance, 2)
             
-            if distance < 15:  # Adjust distance threshold as needed
+            if distance < 4:  # Adjust distance threshold as needed
                 print("Obstacle detected! Moving backward...")
                 move_backward()  # Move backward when obstacle detected
                 time.sleep(1) 
