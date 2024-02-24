@@ -28,7 +28,7 @@ if __name__ == '__main__':
     motor2.stop()
     time.sleep(dt)
     
-    def move_forward(speed):
+    def move_forward():
         motor1.forward(1)  # Move forward at full speed
         motor2.forward(1)  # Move forward at full speed
 
@@ -38,7 +38,7 @@ if __name__ == '__main__':
     
     try:
         while True:
-            move_forward(speed)  # Move forward continuously
+            move_forward()  # Move forward continuously
             time.sleep(0.1)
     except KeyboardInterrupt:
         print("Program stopped by user")
