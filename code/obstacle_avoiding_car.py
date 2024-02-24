@@ -27,18 +27,27 @@ if __name__ == '__main__':
     motor1.stop()
     motor2.stop()
     time.sleep(dt)
+    
+    try:
+        while True:
+            move_forward()  # Move forward continuously
+            time.sleep(0.1)
+    except KeyboardInterrupt:
+        print("Program stopped by user")
+        stop_motors()
+        GPIO.cleanup()
 
-    for speed in speeds:
-        print('Motor forward at {}% speed'.format(speed * 100))
-        motor1.forward(speed)
-        motor2.forward(speed)
-        time.sleep(dt)
+    # for speed in speeds:
+    #     print('Motor forward at {}% speed'.format(speed * 100))
+    #     motor1.forward(speed)
+    #     motor2.forward(speed)
+    #     time.sleep(dt)
 
-    for speed in speeds:
-        print('Motor backward at {}% speed'.format(speed * 100))
-        motor1.backward(speed)
-        motor2.backward(speed)
-        time.sleep(dt)
+    # for speed in speeds:
+    #     print('Motor backward at {}% speed'.format(speed * 100))
+    #     motor1.backward(speed)
+    #     motor2.backward(speed)
+    #     time.sleep(dt)
 
     motor1.stop()
     motor2.stop()
