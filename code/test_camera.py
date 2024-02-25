@@ -9,7 +9,6 @@ if __name__ == '__main__':
     camera = camera_module.Camera({
         "show_preview": True
     })
-    
     start_time = time.time()
 
     while time.time() - start_time < total_seconds:
